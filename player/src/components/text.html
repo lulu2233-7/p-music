@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Audio</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+</head>
+<body>
+	<div id="Audio">
+		<audio ref="mmAudio" :src="src" controls></audio>
+		<button @click="prev">上一曲</button>
+		<button @click="play">暂停/播放</button>
+		<button @click="next">下一曲</button>
+	</div>
+	<script>
+		const vm = new Vue({
+			el: '#Audio',
+			data: {
+				list: [
+					'https://music.163.com/song/media/outer/url?id=450424527.mp3',
+					'https://music.163.com/song/media/outer/url?id=557581284.mp3',
+					'https://music.163.com/song/media/outer/url?id=452986458.mp3'
+				],//歌曲数组
+				index: 0,//当前歌曲下标
+			},
+			computed: {
+				src() {
+                    
+					return this.list[this.index] // 当前播放歌曲
+				}
+			},
+			methods: {
+				prev() {//上一曲
+					let index = this.index - 1;
+					if (index < 0) {
+						index = this.list.length - 1
+					}
+					this.index = index;
+					this.$nextTick(() => this.$refs.mmAudio.play())
+				},
+				play() {//暂停/播放
+					this.$nextTick(() => this.$refs.mmAudio.paused ? this.$refs.mmAudio.play() : this.$refs.mmAudio.pause())
+				},
+				next() {//下一曲
+					let index = this.index + 1;
+					if (index === this.list.length) {
+						index = 0
+					}
+					this.index = index;
+					this.$nextTick(() => this.$refs.mmAudio.play())
+				}
+			}
+		})
+	</script>
+</body>
+</html>
+
+作者：小小茂茂
+链接：https://juejin.cn/post/6844903608622956557
+来源：掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
